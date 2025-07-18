@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${pageTitle ?: 'Consultar Detalhes do Polo'}">Consultar Detalhes do Polo</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body>
+<div th:replace="~{componentes/inicio :: navbar}"></div>
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2><i class="bi bi-building"></i> <span th:text="${pageTitle ?: 'Consultar Detalhes do Polo'}"></span></h2>
+        </div>
+        <div class="card-body">
+            <form method="get" th:action="@{/polos/consultar-polo-detalhes}" class="mb-3">
+                <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <label for="numeroPolo" class="col-form-label">Número do Polo:</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" class="form-control" id="numeroPolo" name="numeroPolo" th:value="${numeroPoloConsultado}" placeholder="Digite o número" required>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="bi bi-search"></i> Pesquisar
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div th:if="${error}" class="alert alert-danger mt-3">
+                <i class="bi bi-exclamation-triangle-fill"></i> <span th:text="${error}"></span>
+            </div>
+
+            <div th:if="${numeroPoloConsultado != null and error == null}" class="mt-4">
+                <h4>Detalhes para o Polo <strong th:text="${numeroPoloConsultado}"></strong>:</h4>
+                <div class="list-group">
+                    <a th:href="@{/polos/{num}/municipios(num=${numeroPoloConsultado})}" class="list-group-item list-group-item-action">
+                        <i class="bi bi-geo-alt-fill"></i> Ver Municípios do Polo
+                    </a>
+                    <a th:href="@{/polos/{num}/zonas(num=${numeroPoloConsultado})}" class="list-group-item list-group-item-action">
+                        <i class="bi bi-map-fill"></i> Ver Zonas do Polo (via seções)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{componentes/inicio :: footer}" class="mt-5"></div>
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

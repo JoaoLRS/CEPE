@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>CEPE</title>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" th:href="@{/css/styles.css}">
+    </head>
+    <body>
+    <!-- Navbar -->
+    <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/inicio}">CEPE</a>
+            <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+
+
+                    <!-- Usuário Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle"
+                           href="#" id="dropdownUsuario"
+                           role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">Usuário</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
+                            <li><a class="dropdown-item" th:href="@{/cadastrar-usuario}">Cadastrar</a></li>
+                            <li><a class="dropdown-item" th:href="@{/consultar-usuario}">Consultar Usuário</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle"
+                            href="#" id="dropdownMunicipio"
+                            role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">Município</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMunicipio">
+                            <li><a class="dropdown-item" th:href="@{/listar-municipios}">Listar município</a></li>
+                            <li><a class="dropdown-item" th:href="@{/consultar-municipios-cod}">Consultar município por código</a></li>
+                            <li><a class="dropdown-item" th:href="@{/consultar-secoes-zonas}">Consultar Zona/Seção</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle"
+                           href="#" id="dropdownZonaEleitoral"
+                            role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">Zona Eleitoral</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownZonaEleitoral">
+                            <li><a class="dropdown-item" th:href="@{/listar-zonas}">Consultar Zona por número</a></li>
+                            <li><a class="dropdown-item" th:href="@{/listar-secoes-por-zona}">Consultar seção por zona</a></li>
+                        </ul>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle"
+                           href="#" id="dropdownPolo"
+                           role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">Polo</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownPolo">
+                            <li><a class="dropdown-item" th:href="@{/polos/consultar-polo-detalhes}">Consultar Detalhes do Polo</a></li>
+                            <li><a class="dropdown-item" th:href="@{/polos/consultar-polo-por-municipio}">Polo de um Município</a></li>
+                            <li><a class="dropdown-item" th:href="@{/polos/consultar-polo-por-zona}">Polo de uma Zona</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="container mt-4">
+    </div>
+
+    <!-- Footer -->
+    <footer th:fragment="footer" class="bg-light text-center py-3 mt-5">
+        <div class="container">
+            <p class="mb-0">Consulta Eleitoral de Pernambuco &copy; <span
+                    th:text="${#dates.year(#dates.createNow())}"></span></p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+    </body>
+</html>

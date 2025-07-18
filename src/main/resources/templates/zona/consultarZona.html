@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultar Zona - CEPE</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .pagination .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: white;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            pointer-events: none;
+            background-color: #e9ecef;
+            color: #6c757d;
+        }
+
+        select.form-select-sm {
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="componentes/inicio :: navbar"></div>
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2><i class="bi bi-search"></i> Consultar Zona por Número</h2>
+        </div>
+
+        <div class="card-body">
+            <form method="get" th:action="@{/listar-zonas}">
+                <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <label class="col-form-label">Número da Zona:</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" class="form-control" name="numeroZona"
+                               th:value="${numeroZona}" placeholder="Digite o número da zona" required>
+                    </div>
+                    <div class="col-auto">
+                        <label class="col-form-label">Exibir:</label>
+                    </div>
+                    <div class="col-auto">
+                        <select class="form-select" name="size">
+                            <option th:value="5" th:selected="${size == 5}">5</option>
+                            <option th:value="10" th:selected="${size == 10}">10</option>
+                            <option th:value="20" th:selected="${size == 20}">20</option>
+                            <option th:value="50" th:selected="${size == 50}">50</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="bi bi-search"></i> Pesquisar
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div th:if="${error != null}" class="alert alert-danger mt-3">
+                <i class="bi bi-exclamation-triangle-fill"></i> <span th:text="${error}"></span>
+            </div>
+
+            <div th:if="${dados != null}" class="mt-4">
+                <h4>Resultado para Zona: <strong th:text="${numeroZona}"></strong></h4>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Número da Zona</th>
+                            <th>Município Sede</th>
+                            <th>Municípios da Zona</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="zona : ${dados}">
+                            <td th:text="${zona.numero}">Zona</td>
+                            <td th:text="${zona.municipioSede.nome}">Município Sede</td>
+                            <td>
+                                <ul class="mb-0">
+                                    <li th:each="m : ${zona.municipios}" th:text="${m.nome}">Município</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Paginação -->
+                <nav class="d-flex justify-content-between align-items-center mt-3">
+
+                    <ul class="pagination mb-0">
+
+                        <!-- Anterior -->
+                        <li class="page-item" th:classappend="${paginaAtual == 0} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{/listar-zonas(numeroZona=${numeroZona}, page=${paginaAtual - 1}, size=${size})}">
+                                <i class="bi bi-chevron-left"></i> Anterior
+                            </a>
+                        </li>
+
+                        <!-- Páginas de 0 a 9 -->
+                        <li class="page-item"
+                            th:each="i : ${#numbers.sequence(0, totalPaginas > 10 ? 9 : totalPaginas - 1)}"
+                            th:classappend="${i == paginaAtual} ? 'active'">
+                            <a class="page-link"
+                               th:href="@{/listar-zonas(numeroZona=${numeroZona}, page=${i}, size=${size})}"
+                               th:text="${i + 1}">1</a>
+                        </li>
+
+                        <!-- Reticências -->
+                        <li class="page-item disabled"
+                            th:if="${totalPaginas > 11}">
+                            <span class="page-link">...</span>
+                        </li>
+
+                        <!-- Última Página -->
+                        <li class="page-item"
+                            th:if="${totalPaginas > 10}"
+                            th:classappend="${paginaAtual == totalPaginas -1} ? 'active'">
+                            <a class="page-link"
+                               th:href="@{/listar-zonas(numeroZona=${numeroZona}, page=${totalPaginas - 1}, size=${size})}"
+                               th:text="${totalPaginas}">Última</a>
+                        </li>
+
+                        <!-- Próxima -->
+                        <li class="page-item"
+                            th:classappend="${paginaAtual + 1 >= totalPaginas} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{/listar-zonas(numeroZona=${numeroZona}, page=${paginaAtual + 1}, size=${size})}">
+                                Próxima <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+
+                </nav>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+<div th:replace="componentes/inicio :: footer"></div>
+
+</body>
+</html>

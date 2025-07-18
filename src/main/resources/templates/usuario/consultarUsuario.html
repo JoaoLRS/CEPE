@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CEPE</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="componentes/inicio :: navbar"></div>
+<!-- Conteúdo Principal -->
+<div class="container mt-4">
+    <div class="container mt-4">
+        <h2>Usuários Cadastrados</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>CPF</th>
+                <th>Nome</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="usuario : ${usuarios}">
+                <td th:text="${usuario.cpf}">CPF</td>
+                <td th:text="${usuario.nome}">Nome</td>
+                <td th:text="${usuario.email}">Email</td>
+            </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/cadastrar-usuario}" class="btn btn-primary">Novo Usuário</a>
+
+    </div>
+</div>
+
+
+<!-- Bootstrap JS -->
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+<div th:replace="componentes/inicio :: footer"></div>
+</body>
+</html>

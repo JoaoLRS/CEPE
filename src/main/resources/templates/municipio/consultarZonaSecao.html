@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultar Seções e Zonas - CEPE</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .pagination .page-item.active .page-link {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: white;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            pointer-events: none;
+            background-color: #e9ecef;
+            color: #6c757d;
+        }
+
+        select.form-select-sm {
+            width: auto;
+        }
+    </style>
+
+</head>
+<body>
+
+<div th:replace="componentes/inicio :: navbar"></div>
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2><i class="bi bi-search"></i> Consultar Seções e Zonas</h2>
+        </div>
+
+        <div class="card-body">
+            <form method="get" th:action="@{/consultar-secoes-zonas}">
+                <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <label class="col-form-label">Código TSE:</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="number" class="form-control" name="codTse"
+                               th:value="${codTse}" placeholder="Digite o código TSE" required>
+                    </div>
+                    <div class="col-auto">
+                        <label class="col-form-label">Exibir:</label>
+                    </div>
+                    <div class="col-auto">
+                        <select class="form-select" name="size">
+                            <option th:value="5" th:selected="${size == 5}">5</option>
+                            <option th:value="10" th:selected="${size == 10}">10</option>
+                            <option th:value="20" th:selected="${size == 20}">20</option>
+                            <option th:value="50" th:selected="${size == 50}">50</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="bi bi-search"></i> Pesquisar
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div th:if="${error != null}" class="alert alert-danger mt-3">
+                <i class="bi bi-exclamation-triangle-fill"></i> <span th:text="${error}"></span>
+            </div>
+
+            <div th:if="${dados != null}" class="mt-4">
+                <h4>Resultado para: <strong th:text="${municipio}"></strong></h4>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Município</th>
+                            <th>Seção</th>
+                            <th>Zona</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="secao : ${dados}">
+                            <td th:text="${municipio}">Município</td>
+                            <td th:text="${secao.numero}">Seção</td>
+                            <td th:text="${secao.zona.numero}">Zona</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Paginação -->
+                <nav class="d-flex justify-content-between align-items-center mt-3">
+
+                    <!-- Controle de paginação -->
+                    <ul class="pagination mb-0">
+
+                        <!-- Botão Anterior -->
+                        <li class="page-item" th:classappend="${paginaAtual == 0} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{/consultar-secoes-zonas(codTse=${codTse}, page=${paginaAtual - 1}, size=${size})}">
+                                <i class="bi bi-chevron-left"></i> Anterior
+                            </a>
+                        </li>
+
+                        <!-- Páginas 0 até 9 -->
+                        <li class="page-item"
+                            th:each="i : ${#numbers.sequence(0, totalPaginas > 10 ? 9 : totalPaginas - 1)}"
+                            th:classappend="${i == paginaAtual} ? 'active'">
+                            <a class="page-link"
+                               th:href="@{/consultar-secoes-zonas(codTse=${codTse}, page=${i}, size=${size})}"
+                               th:text="${i + 1}">1</a>
+                        </li>
+
+                        <!-- Reticências -->
+                        <li class="page-item disabled"
+                            th:if="${totalPaginas > 11}">
+                            <span class="page-link">...</span>
+                        </li>
+
+                        <!-- Última Página -->
+                        <li class="page-item"
+                            th:if="${totalPaginas > 10}"
+                            th:classappend="${paginaAtual == totalPaginas -1} ? 'active'">
+                            <a class="page-link"
+                               th:href="@{/consultar-secoes-zonas(codTse=${codTse}, page=${totalPaginas - 1}, size=${size})}"
+                               th:text="${totalPaginas}">Última</a>
+                        </li>
+
+                        <!-- Botão Próxima -->
+                        <li class="page-item"
+                            th:classappend="${paginaAtual + 1 >= totalPaginas} ? 'disabled'">
+                            <a class="page-link"
+                               th:href="@{/consultar-secoes-zonas(codTse=${codTse}, page=${paginaAtual + 1}, size=${size})}">
+                                Próxima <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+
+                </nav>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+
+<div th:replace="componentes/inicio :: footer"></div>
+
+</body>
+</html>

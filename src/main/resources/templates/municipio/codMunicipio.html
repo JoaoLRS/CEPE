@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Consultar Município por Código - CEPE</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <style>
+        .result-table {
+            margin-top: 20px;
+            display: none; /* Inicialmente oculto */
+        }
+        .error-message {
+            color: #dc3545;
+            margin-top: 10px;
+        }
+        .table-actions {
+            white-space: nowrap;
+            width: 1%;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="componentes/inicio :: navbar"></div>
+
+<!-- Conteúdo Principal -->
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0"><i class="bi bi-search"></i> Consultar Município por Código TSE</h2>
+                </div>
+
+                <div class="card-body">
+                    <form th:action="@{/consultar-municipios-cod}" method="get" id="consultaForm">
+                        <div class="mb-3">
+                            <label for="codTse" class="form-label">Código TSE do Município</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" id="codTse" name="codTse"
+                                       placeholder="Digite o código TSE" required
+                                       th:value="${param.codTse}">
+                                <button class="btn btn-primary" type="submit" id="btnPesquisar">
+                                    <i class="bi bi-search"></i> Pesquisar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Mensagem de erro -->
+                    <div th:if="${error != null}" class="alert alert-danger" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <span th:text="${error}">Mensagem de erro</span>
+                    </div>
+
+                    <!-- Tabela de resultados -->
+                    <div th:if="${municipio != null}" class="result-table" id="resultTable">
+                        <h4 class="mb-3"><i class="bi bi-table"></i> Resultado da Pesquisa</h4>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <thead class="table-light">
+                                <tr>
+                                    <th>Código TSE</th>
+                                    <th>Nome</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td th:text="${municipio.codTse}">12345</td>
+                                    <td th:text="${municipio.nome}">Nome do Município</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mostra a tabela se houver resultados
+        const municipioExists = document.querySelector('#resultTable tbody tr') !== null;
+        if (municipioExists) {
+            document.getElementById('resultTable').style.display = 'block';
+        }
+
+        // Validação do formulário
+        document.getElementById('consultaForm').addEventListener('submit', function(e) {
+            const codTse = document.getElementById('codTse').value;
+            if (!codTse) {
+                e.preventDefault();
+                alert('Por favor, informe o código TSE do município');
+            }
+        });
+    });
+</script>
+
+<div th:replace="componentes/inicio :: footer"></div>
+</body>
+</html>
