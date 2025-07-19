@@ -93,7 +93,7 @@ Siga os passos abaixo para configurar e executar a aplicação em seu ambiente l
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [[https://github.com/JoaoLRS/CEPE.git](https://github.com/JoaoLRS/CEPE.git)]
+       git clone https://github.com/JoaoLRS/CEPE.git(https://github.com/JoaoLRS/CEPE.git)
     ```
 
 2.  **Configure o Banco de Dados:**
