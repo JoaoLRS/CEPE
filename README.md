@@ -11,7 +11,7 @@ O projeto foi construído utilizando as seguintes tecnologias:
 * **Servidor Web:** Spring Web 
 * **Template Engine:** Thymeleaf 
 * **Estilização:** Bootstrap 
-* **Banco de Dados:** PostgreSQL (recomendado) 
+* **Banco de Dados:** PostgreSQL  
 
 ## 🗃️ Estrutura de Dados
 
